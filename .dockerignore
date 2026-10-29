@@ -1,0 +1,7 @@
+.git
+.github
+.idea
+.gradle
+android
+node_modules
+www/app.bundle.js

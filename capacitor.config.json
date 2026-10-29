@@ -2,13 +2,6 @@
   "appId": "com.kidslearningapp.littlelearners",
   "appName": "Little Learners",
   "webDir": "www",
-  "server": {
-    "url": "https://kidslearningapp-94co.onrender.com",
-    "cleartext": false,
-    "allowNavigation": [
-      "kidslearningapp-94co.onrender.com"
-    ]
-  },
   "android": {
     "allowMixedContent": false
   }

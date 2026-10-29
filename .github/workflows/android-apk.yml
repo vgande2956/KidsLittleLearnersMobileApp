@@ -8,6 +8,9 @@ on:
       - '.github/workflows/android-apk.yml'
       - 'capacitor.config.json'
       - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/**'
+      - 'native/**'
       - 'www/**'
 
 permissions:
@@ -36,6 +39,8 @@ jobs:
         run: sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0'
       - name: Install Capacitor dependencies
         run: npm install --no-audit --no-fund
+      - name: Bundle the mobile app
+        run: npm run build
       - name: Generate Android project
         run: npm run android:setup
       - name: Sync Android project

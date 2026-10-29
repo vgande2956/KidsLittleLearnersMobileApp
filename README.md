@@ -1,23 +1,28 @@
 # Little Learners for Android
 
-A standalone Android app for Little Learners. It runs in its own Android app window and loads the production learning app at https://kidslearningapp-94co.onrender.com.
+The Android app is a separate mobile experience bundled inside the APK. It does not open or embed the Little Learners website. Its screens and styles are stored in `www/`; account requests go to the same production authentication API and users database as the website.
 
-## Online and offline behavior
+The Dockerfile and `render.yaml` deploy a separate hosted copy of the mobile UI. Nginx serves the bundled app and proxies browser account requests to the existing production API, keeping session cookies on the mobile service origin. This Render service does not replace or create the website backend or its users database.
 
-- An internet connection is required the first time the app opens, and for sign-in, email verification, and other account services.
-- After a successful online launch, the website's service worker caches the app shell and learning assets. Learning activities can then open offline when those assets have been cached.
-- Account and email services remain online-only. Offline support is for cached learning content, not offline account creation or synchronization.
+## Accounts and connectivity
+
+- Sign up, email verification, login, session restore, and logout use `https://kidslearningapp-94co.onrender.com/api/auth/`.
+- The Android app uses the backend's `ll_session` HttpOnly cookie through a native Capacitor plugin. Credentials and session cookies are not stored in the web page.
+- Existing website accounts work in the mobile app, and accounts created in the mobile app are available on the website after email verification.
+- An internet connection is required for account services. The mobile app screens and included learning interactions are packaged locally.
 
 ## Android Studio
 
 Requirements: Node.js 20+, Android Studio with the Android SDK, and Java 17.
 
 1. Clone this repository and open its folder in a terminal.
-2. Install dependencies and generate/synchronize the native Android project:
+2. Install dependencies, bundle the app, and generate/synchronize the native Android project:
 
    ```sh
    npm install
+   npm run build
    npm run android:setup
+   npm run android:sync
    ```
 
 3. Open the generated project in Android Studio:
@@ -32,4 +37,4 @@ The **Build Android APK** GitHub Actions workflow also builds a separate APK. Ru
 
 ## Updating
 
-The mobile shell is separate from the website repository. The shell's URL is set in `capacitor.config.json`. The online website can update independently; native project changes require rebuilding the APK. Cached offline content updates the next time the app connects and the service worker refreshes.
+The mobile app is separate from the website repository. Its local UI is under `www/`, and its authentication API origin is set in `www/app.js`. Rebuild and sync the Android project after changing the local UI or native plugin.
