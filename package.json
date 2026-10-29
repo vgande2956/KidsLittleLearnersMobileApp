@@ -2,15 +2,20 @@
   "name": "little-learners-android",
   "version": "1.0.0",
   "private": true,
-  "description": "Standalone Android shell for Little Learners",
+  "description": "Standalone Android app for Little Learners",
   "scripts": {
-    "android:setup": "cap add android",
+    "build": "esbuild www/app.js --bundle --outfile=www/app.bundle.js --platform=browser --target=es2020",
+    "android:setup": "node scripts/setup-android.mjs",
     "android:sync": "cap sync android",
     "android:open": "cap open android"
   },
   "devDependencies": {
     "@capacitor/android": "^7.4.3",
     "@capacitor/cli": "^7.4.3",
-    "@capacitor/core": "^7.4.3"
+    "@capacitor/core": "^7.4.3",
+    "esbuild": "^0.25.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
   }
 }
