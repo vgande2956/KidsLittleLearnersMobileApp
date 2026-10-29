@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Little Learners">
+<title>Little Learners</title>
+<meta name="theme-color" content="#fff7f0">
+<meta name="description" content="Learn, play, and grow with Little Learners.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="images/little-learners-logo-transparent.png" type="image/png">
+<link rel="apple-touch-icon" href="images/little-learners-logo-transparent.png">
+<link rel="stylesheet" href="styles.css"></head><body>
+<button id="mute-toggle" class="mute-toggle" type="button" hidden aria-label="Mute sound" aria-pressed="false">🔊 Sound on</button>
+<dialog id="english-warrior-dialog" class="english-warrior-dialog" aria-labelledby="english-warrior-dialog-title" aria-describedby="english-warrior-dialog-description">
+<div class="english-warrior-dialog-card">
+<button id="english-warrior-close" class="english-warrior-close" type="button" aria-label="Close warrior introduction">×</button>
+<span id="english-warrior-dialog-letter" class="english-warrior-dialog-letter" aria-hidden="true"></span>
+<h2 id="english-warrior-dialog-title"></h2>
+<img id="english-warrior-dialog-image" class="english-warrior-dialog-image" alt="" hidden>
+<div id="english-warrior-dialog-image-placeholder" class="english-warrior-dialog-image-placeholder" aria-hidden="true">📖</div>
+<p id="english-warrior-dialog-description"></p>
+<button id="english-warrior-hear" class="english-warrior-hear" type="button">🔊 Hear introduction</button>
+</div>
+</dialog>
+<section id="splash" aria-label="Little Learners">
+<div class="splash-sparkle" aria-hidden="true">✨</div>
+<img class="splash-logo" src="images/little-learners-logo-transparent.png" alt="Little Learners logo showing two children reading together">
+<h1 class="splash-title visually-hidden">Little Learners</h1>
+<div class="welcome-art" aria-hidden="true"><span>🦋</span><span>🌈</span><span>⭐</span></div>
+<div class="welcome-auth-actions" role="group" aria-label="Account options">
+<button class="welcome-start" id="welcome-login" type="button">Log in <span aria-hidden="true">➜</span></button>
+<button class="welcome-start welcome-signup" id="welcome-signup" type="button">Create account</button>
+</div>
+<p id="auth-session-status" class="auth-status" role="status" aria-live="polite"></p>
+</section>
+<section id="auth-login" class="auth-screen" hidden aria-labelledby="auth-login-title">
+<button class="auth-back" id="auth-login-back" type="button">← Welcome</button>
+<div class="auth-layout">
+<aside class="auth-showcase">
+<span class="auth-brand">✨ Little Learners</span>
+<div class="auth-art" aria-hidden="true"><span class="auth-art-book">📚</span><span class="auth-art-star">⭐</span><span class="auth-art-panda">🐼</span><span class="auth-art-pencil">✏️</span></div>
+<p class="auth-eyebrow">YOUR LEARNING ADVENTURE</p>
+<h2>Every day is a chance to discover something new.</h2>
+<p class="auth-showcase-copy">Pick up where you left off and keep learning, one little step at a time.</p>
+<div class="auth-trust-note"><span aria-hidden="true">🔒</span><span>Your account is protected with secure sign-in.</span></div>
+</aside>
+<div class="auth-panel">
+<div class="auth-panel-heading"><span class="auth-kicker">WELCOME BACK</span><h1 id="auth-login-title">Log in to learn</h1><p class="auth-intro">Use the email address and password for your account.</p></div>
+<div class="auth-method-badge"><span aria-hidden="true">✉️</span> Email and password</div>
+<form id="auth-login-form" class="auth-form">
+<label for="auth-login-email">Email address</label>
+<input id="auth-login-email" name="email" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" required>
+<label for="auth-login-password">Password</label>
+<input id="auth-login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+<p id="auth-login-status" class="auth-status" role="status" aria-live="polite"></p>
+<button class="auth-resend" id="auth-login-resend" type="button" hidden>Send confirmation email again</button>
+<button class="auth-submit" type="submit"><span>Log in</span><span aria-hidden="true">→</span></button>
+</form>
+<p class="auth-switch">New to Little Learners? <button id="auth-show-signup" type="button">Create an account</button></p>
+<p class="auth-privacy-note">🔐 We never store your password in plain text.</p>
+</div>
+</div>
+</section>
+<section id="auth-signup" class="auth-screen" hidden aria-labelledby="auth-signup-title">
+<button class="auth-back" id="auth-signup-back" type="button">← Welcome</button>
+<div class="auth-layout auth-layout-signup">
+<aside class="auth-showcase">
+<span class="auth-brand">✨ Little Learners</span>
+<div class="auth-art" aria-hidden="true"><span class="auth-art-book">📚</span><span class="auth-art-star">🌈</span><span class="auth-art-panda">🦊</span><span class="auth-art-pencil">✨</span></div>
+<p class="auth-eyebrow">A BRIGHTER WAY TO LEARN</p>
+<h2>Big ideas start with little learners.</h2>
+<p class="auth-showcase-copy">Create your family account and make room for stories, languages, numbers, and curious questions.</p>
+<div class="auth-feature-pills"><span>📖 Stories</span><span>🔤 Languages</span><span>🧮 Maths</span></div>
+</aside>
+<div class="auth-panel">
+<div id="auth-signup-panel-heading" class="auth-panel-heading"><span class="auth-kicker">GET STARTED</span><h1 id="auth-signup-title">Create your account</h1><p class="auth-intro">A parent or guardian can sign up with an email address.</p></div>
+<div id="auth-signup-method-badge" class="auth-method-badge"><span aria-hidden="true">✉️</span> Email verification required</div>
+<form id="auth-signup-form" class="auth-form">
+<label for="auth-signup-first-name">Your first name</label>
+<input id="auth-signup-first-name" name="firstName" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Asha" required>
+<label for="auth-signup-email">Email address</label>
+<input id="auth-signup-email" name="email" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" required>
+<label for="auth-signup-password">Create a password</label>
+<input id="auth-signup-password" name="password" type="password" minlength="10" maxlength="1024" autocomplete="new-password" placeholder="At least 10 characters" required>
+<p class="auth-password-hint">Use at least 10 characters. Your password is securely hashed before it is saved.</p>
+<p id="auth-signup-status" class="auth-status" role="status" aria-live="polite"></p>
+<button class="auth-resend" id="auth-signup-resend" type="button" hidden>Send confirmation email again</button>
+<button class="auth-submit" type="submit"><span>Create account</span><span aria-hidden="true">→</span></button>
+</form>
+<p id="auth-signup-switch" class="auth-switch">Already have an account? <button id="auth-show-login" type="button">Log in</button></p>
+<p id="auth-signup-privacy" class="auth-privacy-note">By continuing, you agree to keep your sign-in details private.</p>
+<section id="auth-signup-confirmation" class="auth-confirmation" hidden aria-labelledby="auth-signup-confirmation-title">
+<span class="auth-confirmation-icon" aria-hidden="true">✉️</span>
+<span class="auth-kicker">ONE LAST STEP</span>
+<h1 id="auth-signup-confirmation-title">Check your inbox</h1>
+<p class="auth-intro">We sent a confirmation link to <strong id="auth-signup-confirmation-email"></strong>. Open it to activate your account and start learning.</p>
+<p id="auth-signup-confirmation-status" class="auth-status" role="status" aria-live="polite"></p>
+<button id="auth-signup-confirmation-resend" class="auth-resend" type="button">Resend link (log in first)</button>
+<button id="auth-signup-confirmation-login" class="auth-submit" type="button">Back to log in</button>
+</section>
+</div>
+</div>
+</section>
+<section id="app-tour" class="app-tour-screen" hidden aria-labelledby="app-tour-title">
+<header class="app-tour-header">
+<span class="app-tour-brand">✨ Little Learners</span>
+<button id="app-tour-skip" type="button">Skip tour</button>
+</header>
+<h1 id="app-tour-title">Take a quick app tour</h1>
+<p class="app-tour-intro">A little look at the fun waiting for you.</p>
+<div class="app-tour-video" role="region" aria-live="polite" aria-label="Animated app tour">
+<div class="app-tour-scene" id="app-tour-scene">
+<span class="app-tour-scene-icon" id="app-tour-icon" aria-hidden="true">🔤</span>
+<div class="app-tour-demo" id="app-tour-demo" aria-hidden="true"><span>English</span><span>తెలుగు</span><span>हिन्दी</span><span>Maths</span></div>
+<h2 id="app-tour-step-title">Choose how to learn</h2>
+<p id="app-tour-step-copy">Pick English, Telugu, Hindi, Maths, or General Knowledge to begin.</p>
+</div>
+</div>
+<div class="app-tour-progress" id="app-tour-progress" role="group" aria-label="Tour progress">
+<span class="is-current" aria-label="Step 1 of 3"></span><span aria-label="Step 2 of 3"></span><span aria-label="Step 3 of 3"></span>
+</div>
+<p class="app-tour-status" id="app-tour-status" role="status" aria-live="polite"></p>
+<button class="app-tour-continue" id="app-tour-continue" type="button">Go to learning choices ➜</button>
+</section>
+<section id="language" hidden>
+<div class="learning-mascot" aria-hidden="true"><img src="images/little-learners-logo-transparent.png" alt=""></div><h1>What would you like to learn?</h1>
+<div class="account-toolbar"><span id="account-greeting"></span><button id="account-logout" type="button" hidden>Log out</button></div>
+<button class="listen-options" id="listen-options" type="button" aria-label="Hear the available learning options">🔊 Hear options</button>
+<div class="languages" role="group" aria-label="Choose a language or learning subject">
+<button class="choice-card english-card" type="button" data-language="English"><span class="choice-icon" aria-hidden="true">🔤</span><span class="choice-label">English</span></button>
+<button class="choice-card telugu-card" type="button" data-language="Telugu"><span class="choice-icon" aria-hidden="true">🌼</span><span class="choice-label">తెలుగు <small>Telugu</small></span></button>
+<button class="choice-card hindi-card" type="button" data-language="Hindi"><span class="choice-icon" aria-hidden="true">🪷</span><span class="choice-label">हिन्दी <small>Hindi</small></span></button>
+<button class="choice-card maths-card" type="button" id="math-entry"><span class="choice-icon" aria-hidden="true">🧮</span><span class="choice-label">Maths</span></button>
+<button class="choice-card general-knowledge-entry" type="button" id="general-knowledge-entry"><span class="choice-icon" aria-hidden="true">🗺️</span><span class="choice-label">General Knowledge<small>Explore India and more</small></span></button>
+</div>
+</section>
+<section id="english-types" class="english-screen english-types-screen" hidden aria-labelledby="english-types-title">
+<div class="big" aria-hidden="true">📚</div>
+<h1 id="english-types-title">Choose the option to start learning</h1>
+<p id="english-types-intro">Pick a fun activity and let’s learn!</p>
+<div class="english-type-options" role="group" aria-label="Choose an English learning activity">
+<button class="choice-card english-type-card english-two-card" type="button" data-english-type="two"><span class="choice-icon" aria-hidden="true">🐝</span><span class="choice-label">2-letter words<small>am · in · to</small></span></button>
+<button class="choice-card english-type-card english-three-card" type="button" data-english-type="three"><span class="choice-icon" aria-hidden="true">🐈</span><span class="choice-label">3-letter words<small>cat · sun · dog</small></span></button>
+<button class="choice-card english-type-card english-multi-card" type="button" data-english-type="multi"><span class="choice-icon" aria-hidden="true">🦋</span><span class="choice-label">Multi-letter words<small>butterfly · rainbow</small></span></button>
+<button class="choice-card english-type-card english-alphabets-card" type="button" id="english-alphabets-entry"><span class="choice-icon" aria-hidden="true">🔠</span><span class="choice-label">Alphabets<small>Learn A to Z</small></span></button>
+<button class="choice-card english-type-card english-deity-card" type="button" id="english-deity-entry"><span class="choice-icon" aria-hidden="true">🪷</span><span class="choice-label">Learn Letters: Indian Gods<small>A–Z names, pictures &amp; stories</small></span></button>
+<button class="choice-card english-type-card english-warrior-card" type="button" id="english-warriors-entry"><span class="choice-icon" aria-hidden="true">🏹</span><span class="choice-label">Epic Warriors<small>Ramayana &amp; Mahabharata A–Z</small></span></button>
+<button class="choice-card english-type-card english-stories-card" type="button" id="english-stories-entry"><span class="choice-icon" aria-hidden="true">📖</span><span class="choice-label">Stories<small>Listen and imagine together</small></span></button>
+<button class="choice-card english-type-card english-everyday-card" type="button" id="english-everyday-entry"><span class="choice-icon" aria-hidden="true">🥛</span><span class="choice-label">Everyday Objects<small>Learn about things around us</small></span></button>
+<button class="choice-card english-type-card animal-trivia-entry" type="button" id="animal-trivia-entry"><span class="choice-icon" aria-hidden="true">🦁</span><span class="choice-label">Animal Trivia<small>Discover amazing animals</small></span></button>
+<button class="choice-card english-type-card food-nature-entry" type="button" id="food-nature-entry"><span class="choice-icon" aria-hidden="true">🌱</span><span class="choice-label">Food &amp; Nature<small>Discover plants, food, and the outdoors</small></span></button>
+<button class="choice-card english-type-card english-identify-card" type="button" id="english-identify-entry"><span class="choice-icon" aria-hidden="true">🕵️</span><span class="choice-label">Identify words<small>Match the picture</small></span></button>
+<button class="choice-card english-type-card english-sentence-card" type="button" id="english-sentence-entry"><span class="choice-icon" aria-hidden="true">🧩</span><span class="choice-label">Sentence formation<small>Build fun sentences</small></span></button>
+<button class="choice-card english-type-card english-spelling-card" type="button" id="english-spelling-entry"><span class="choice-icon" aria-hidden="true">✏️</span><span class="choice-label">How to spell<small>Spell words level by level</small></span></button>
+<button class="choice-card english-type-card english-sketch-card" type="button" id="english-sketch-entry"><span class="choice-icon" aria-hidden="true">🎨</span><span class="choice-label">Sketch the diagram<small>Color pictures and practice</small></span></button>
+</div>
+<button class="english-back" type="button" id="english-types-back">← Back</button>
+</section>
+<section id="english-everyday" class="english-screen everyday-screen" hidden aria-labelledby="english-everyday-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-everyday-back">← English</button>
+<h1 id="english-everyday-title">Everyday Objects</h1>
+<span></span>
+</header>
+<p class="everyday-intro">Look, listen, and learn about the world around you.</p>
+<article id="everyday-object-card" class="everyday-object-card" aria-live="polite">
+<p id="everyday-object-count" class="everyday-object-count"></p>
+<img id="everyday-object-image" class="everyday-object-image" alt="">
+<h2 id="everyday-object-name"></h2>
+<p id="everyday-object-fact" class="everyday-object-fact"></p>
+<a id="everyday-object-source" class="everyday-object-source" target="_blank" rel="noopener noreferrer" aria-label="Photo and license details"></a>
+</article>
+<button class="everyday-hear" id="everyday-hear" type="button">🔊 Hear the sentence</button>
+<nav class="everyday-navigation" aria-label="Everyday objects navigation">
+<button id="everyday-previous" type="button">← Previous</button>
+<button id="everyday-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="animal-trivia" class="english-screen everyday-screen animal-trivia-screen" hidden aria-labelledby="animal-trivia-title">
+<header class="english-header">
+<button class="english-back" type="button" id="animal-trivia-back">← English</button>
+<h1 id="animal-trivia-title">Animal Trivia</h1>
+<span></span>
+</header>
+<p class="everyday-intro">Listen and learn amazing facts about animals.</p>
+<article id="animal-trivia-card" class="everyday-object-card" aria-live="polite">
+<p id="animal-trivia-count" class="everyday-object-count"></p>
+<img id="animal-trivia-image" class="everyday-object-image" alt="">
+<h2 id="animal-trivia-name"></h2>
+<p id="animal-trivia-fact" class="everyday-object-fact"></p>
+<a id="animal-trivia-source" class="everyday-object-source" target="_blank" rel="noopener noreferrer" aria-label="Photo and license details"></a>
+</article>
+<button class="everyday-hear" id="animal-trivia-hear" type="button">🔊 Hear the sentence</button>
+<nav class="everyday-navigation" aria-label="Animal trivia navigation">
+<button id="animal-trivia-previous" type="button">← Previous</button>
+<button id="animal-trivia-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="food-nature" class="english-screen everyday-screen food-nature-screen" hidden aria-labelledby="food-nature-title">
+<header class="english-header">
+<button class="english-back" type="button" id="food-nature-back">← English</button>
+<h1 id="food-nature-title">Food &amp; Nature</h1>
+<span></span>
+</header>
+<p class="everyday-intro">Explore tasty foods and the wonders of nature.</p>
+<article id="food-nature-card" class="everyday-object-card" aria-live="polite">
+<p id="food-nature-count" class="everyday-object-count"></p>
+<img id="food-nature-image" class="everyday-object-image" alt="">
+<h2 id="food-nature-name"></h2>
+<p id="food-nature-fact" class="everyday-object-fact"></p>
+<a id="food-nature-source" class="everyday-object-source" target="_blank" rel="noopener noreferrer" aria-label="Photo and license details"></a>
+</article>
+<button class="everyday-hear" id="food-nature-hear" type="button">🔊 Hear the sentence</button>
+<nav class="everyday-navigation" aria-label="Food and nature navigation">
+<button id="food-nature-previous" type="button">← Previous</button>
+<button id="food-nature-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="general-knowledge" class="english-screen general-knowledge-screen" hidden aria-labelledby="general-knowledge-title">
+<header class="english-header">
+<button class="english-back" type="button" id="general-knowledge-back">← Back</button>
+<h1 id="general-knowledge-title">General Knowledge</h1>
+<span></span>
+</header>
+<p>Choose a topic to explore.</p>
+<div class="general-knowledge-options" role="group" aria-label="Choose a general knowledge topic">
+<button class="choice-card state-capitals-entry" type="button" id="state-capitals-entry"><span class="choice-icon" aria-hidden="true">🇮🇳</span><span class="choice-label">States &amp; Capitals<small>Explore the map of India</small></span></button>
+<button class="choice-card prime-ministers-entry" type="button" id="prime-ministers-entry"><span class="choice-icon" aria-hidden="true">🏛️</span><span class="choice-label">Prime Ministers of India<small>Learn about India’s leaders</small></span></button>
+<button class="choice-card india-symbols-entry" type="button" id="india-symbols-entry"><span class="choice-icon" aria-hidden="true">🇮🇳</span><span class="choice-label">India &amp; National Symbols<small>Discover the symbols of India</small></span></button>
+</div>
+</section>
+<section id="state-capitals" class="english-screen state-capitals-screen" hidden aria-labelledby="state-capitals-title">
+<header class="english-header">
+<button class="english-back" type="button" id="state-capitals-back">← General Knowledge</button>
+<h1 id="state-capitals-title">India: States &amp; Capitals</h1>
+<span></span>
+</header>
+<div class="state-capitals-content">
+<div class="state-capitals-map-section">
+<div id="india-map-viewport" class="india-map-viewport" role="img" aria-label="Map of India with state and union territory capital locations">
+<div id="india-map-camera" class="india-map-camera">
+<img src="images/india/india-admin1.svg" alt="">
+<svg id="india-capital-markers" viewBox="0 0 720 800" aria-hidden="true">
+<g id="india-capital-dots"></g>
+<g id="india-capital-pin"></g>
+</svg>
+</div>
+</div>
+<p id="state-capitals-selected" class="state-capitals-selected" role="status" aria-live="polite">Choose a state or union territory below.</p>
+</div>
+<div class="state-capitals-lists">
+<section aria-labelledby="indian-states-heading">
+<h2 id="indian-states-heading">28 States</h2>
+<div id="india-states-grid" class="india-states-grid" role="group" aria-label="Indian states and their capitals"></div>
+</section>
+<section aria-labelledby="indian-union-territories-heading">
+<h2 id="indian-union-territories-heading">8 Union Territories</h2>
+<div id="india-union-territories-grid" class="india-states-grid" role="group" aria-label="Indian union territories and their capitals"></div>
+</section>
+</div>
+</div>
+<button id="state-capitals-read-all" class="state-capitals-read-all" type="button">🔊 Read all 28 States &amp; 8 Union Territories</button>
+</section>
+<section id="prime-ministers" class="english-screen prime-ministers-screen" hidden aria-labelledby="prime-ministers-title">
+<header class="english-header">
+<button class="english-back" type="button" id="prime-ministers-back">← General Knowledge</button>
+<h1 id="prime-ministers-title">Prime Ministers of India</h1>
+<span></span>
+</header>
+<p class="prime-ministers-intro">Meet India’s prime ministers in the order they first took office.</p>
+<article id="prime-minister-card" class="prime-minister-card" aria-live="polite">
+<img id="prime-minister-image" class="prime-minister-image" alt="">
+<div class="prime-minister-details">
+<p id="prime-minister-count" class="prime-minister-count"></p>
+<h2 id="prime-minister-name"></h2>
+<p id="prime-minister-tenure" class="prime-minister-tenure"></p>
+<a id="prime-minister-source" class="prime-minister-source" target="_blank" rel="noopener noreferrer">Photo and license details: Wikimedia Commons</a>
+</div>
+</article>
+<nav class="prime-ministers-navigation" aria-label="Prime minister navigation">
+<button id="prime-minister-previous" type="button">← Previous</button>
+<button id="prime-minister-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="india-symbols" class="english-screen india-symbols-screen" hidden aria-labelledby="india-symbols-title">
+<header class="english-header">
+<button class="english-back" type="button" id="india-symbols-back">← General Knowledge</button>
+<h1 id="india-symbols-title">India &amp; National Symbols</h1>
+<span></span>
+</header>
+<p class="india-symbols-intro">Choose what you would like to explore.</p>
+<div class="india-symbols-options" role="group" aria-label="Choose national information or a state">
+<button class="choice-card india-national-entry" type="button" id="india-national-entry"><span class="choice-icon" aria-hidden="true">🇮🇳</span><span class="choice-label">National Information<small>Symbols, places, and facts about India</small></span></button>
+<button class="choice-card india-states-entry" type="button" id="india-states-entry"><span class="choice-icon" aria-hidden="true">🗺️</span><span class="choice-label">States<small>Explore all 28 states and their symbols</small></span></button>
+</div>
+</section>
+<section id="india-national-information" class="english-screen india-information-screen" hidden aria-labelledby="india-national-title">
+<header class="english-header">
+<button class="english-back" type="button" id="india-national-back">← India &amp; Symbols</button>
+<h1 id="india-national-title">National Information</h1>
+<span></span>
+</header>
+<article id="india-national-card" class="india-information-card" aria-live="polite">
+<p id="india-national-count" class="india-information-count"></p>
+<img id="india-national-image" class="india-information-image" alt="">
+<h2 id="india-national-name"></h2>
+<p id="india-national-fact" class="india-information-fact"></p>
+<a id="india-national-source" class="india-information-source" target="_blank" rel="noopener noreferrer" aria-label="Photo and license details">Photo and license details</a>
+</article>
+<button class="india-information-hear" id="india-national-hear" type="button">🔊 Hear the fact</button>
+<nav class="india-information-navigation" aria-label="National information navigation">
+<button id="india-national-previous" type="button">← Previous</button>
+<button id="india-national-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="india-states-information" class="english-screen india-information-screen india-states-information-screen" hidden aria-labelledby="india-states-title">
+<header class="english-header">
+<button class="english-back" type="button" id="india-states-back">← India &amp; Symbols</button>
+<h1 id="india-states-title">Indian States</h1>
+<span></span>
+</header>
+<label class="india-state-picker-label" for="india-state-picker">Choose a state</label>
+<select id="india-state-picker" class="india-state-picker"></select>
+<article id="india-state-card" class="india-information-card india-state-card" aria-live="polite">
+<p id="india-state-count" class="india-information-count"></p>
+<img id="india-state-image" class="india-information-image india-state-image" alt="">
+<h2 id="india-state-name"></h2>
+<p id="india-state-capital" class="india-information-fact"></p>
+<div class="india-state-symbols">
+<div class="india-state-symbol">
+<img id="india-state-animal-image" class="india-state-symbol-image" alt="">
+<p id="india-state-animal" class="india-information-fact"></p>
+</div>
+<div class="india-state-symbol">
+<img id="india-state-bird-image" class="india-state-symbol-image" alt="">
+<p id="india-state-bird" class="india-information-fact"></p>
+</div>
+</div>
+<a id="india-state-source" class="india-information-source" target="_blank" rel="noopener noreferrer" aria-label="Photo and license details">Photo and license details</a>
+</article>
+<button class="india-information-hear" id="india-state-hear" type="button">🔊 Hear the facts</button>
+<nav class="india-information-navigation" aria-label="State navigation">
+<button id="india-state-previous" type="button">← Previous</button>
+<button id="india-state-next" type="button">Next →</button>
+</nav>
+</section>
+<section id="stories-genres" class="english-screen stories-screen" hidden aria-labelledby="stories-genres-title">
+<header class="english-header">
+<button class="english-back" type="button" id="stories-genres-back">← Back</button>
+<h1 id="stories-genres-title">Choose a story world</h1>
+<span></span>
+</header>
+<p id="stories-genres-intro">Pick a kind of story to explore.</p>
+<div id="stories-genre-grid" class="stories-genre-grid" role="group" aria-label="Choose a story type"></div>
+</section>
+<section id="stories-list" class="english-screen stories-screen" hidden aria-labelledby="stories-list-title">
+<header class="english-header">
+<button class="english-back" type="button" id="stories-list-back">← Story worlds</button>
+<h1 id="stories-list-title">Stories</h1>
+<span></span>
+</header>
+<p id="stories-list-intro"></p>
+<div id="stories-list-grid" class="stories-list-grid" role="group" aria-label="Choose a story"></div>
+</section>
+<section id="stories-reader" class="english-screen stories-screen stories-reader" hidden aria-labelledby="stories-reader-title">
+<header class="english-header">
+<button class="english-back" type="button" id="stories-reader-back">← Stories</button>
+<h1 id="stories-reader-title"></h1>
+<span></span>
+</header>
+<img id="stories-reader-image" class="stories-reader-image" src="images/stories/fun.svg" alt="">
+<p id="stories-reader-genre" class="stories-reader-genre"></p>
+<div id="stories-reader-pages" class="stories-reader-pages" role="region" aria-label="Story" aria-live="polite"></div>
+<aside id="stories-reader-moral" class="stories-reader-moral" aria-label="Moral of the story">
+<strong id="stories-reader-moral-title">Moral of the story</strong>
+<p id="stories-reader-moral-text"></p>
+</aside>
+<div class="stories-reader-controls">
+<button class="english-hear stories-listen" type="button" id="stories-listen">🔊 Listen to the story</button>
+<button class="english-back stories-stop" type="button" id="stories-stop">⏹ Stop</button>
+</div>
+<p id="stories-reader-status" class="stories-reader-status" role="status" aria-live="polite"></p>
+</section>
+<section id="english-identify-levels" class="english-screen english-identify-levels" hidden aria-labelledby="english-identify-levels-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-identify-levels-back">← Back</button>
+<h1 id="english-identify-levels-title">Identify the Picture</h1>
+<span></span>
+</header>
+<p>Complete 10 questions to unlock the next level!</p>
+<nav class="addition-level-pager" aria-label="Picture quiz level pages">
+<button class="addition-level-page-button" type="button" id="english-identify-previous">← Previous 10</button>
+<span id="english-identify-page-label" aria-live="polite"></span>
+<button class="addition-level-page-button" type="button" id="english-identify-next-page">Next 10 ➜</button>
+</nav>
+<div class="english-identify-level-grid" id="english-identify-level-grid" role="group" aria-label="Choose a picture quiz level"></div>
+<p class="english-identify-progress" id="english-identify-level-feedback" aria-live="polite"></p>
+</section>
+<section id="english-identify-quiz" class="english-screen english-identify-quiz" hidden aria-labelledby="english-identify-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-identify-quit">← Back</button>
+<h1 id="english-identify-title">Identify the Picture</h1>
+<button class="english-hear" type="button" id="english-identify-hear">🔊 Hear question</button>
+</header>
+<p class="english-identify-counter" id="english-identify-counter"></p>
+<p class="english-identify-question" id="english-identify-question"></p>
+<div class="english-identify-options" id="english-identify-options" role="group" aria-label="Choose the matching picture"></div>
+<p class="english-identify-feedback" id="english-identify-feedback" aria-live="polite">Choose the correct picture!</p>
+<button class="english-identify-next" id="english-identify-next" type="button" disabled>Next question ➜</button>
+</section>
+<section id="english-alphabets" class="english-screen english-alphabet-screen" hidden aria-labelledby="english-alphabets-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-alphabets-back">← Back</button>
+<h1 id="english-alphabets-title">English Alphabets</h1>
+<button class="english-hear" type="button" id="english-alphabets-hear">🔊 Hear letter</button>
+</header>
+<p>Tap a letter to see it, learn an example, and hear its name.</p>
+<div id="english-alphabet-display" class="english-alphabet-display" aria-live="polite">
+<div class="alphabet-display-placeholder"><span aria-hidden="true">🌟</span><strong>Choose a letter!</strong></div>
+</div>
+<div class="english-alphabets-grid" id="english-alphabets-grid" role="group" aria-label="Choose an English letter"></div>
+</section>
+<section id="english-deity-letters" class="english-screen english-deity-screen" hidden aria-labelledby="english-deity-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-deity-back">← Back</button>
+<h1 id="english-deity-title">Letters from Indian Traditions</h1>
+<button class="english-hear" type="button" id="english-deity-hear">🔊 Hear name</button>
+</header>
+<p>Choose a letter to see a real image of an Indian deity and learn a fact. Tap Hear to listen.</p>
+<div id="english-deity-display" class="english-deity-display" aria-live="polite">
+<div class="english-deity-placeholder"><span aria-hidden="true">🪷</span><strong>Choose a letter!</strong></div>
+</div>
+<div class="english-deity-grid" id="english-deity-grid" role="group" aria-label="Choose a letter to learn an Indian deity name"></div>
+</section>
+<section id="english-epic-warriors" class="english-screen english-warrior-screen" hidden aria-labelledby="english-warrior-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-warriors-back">← Back</button>
+<h1 id="english-warrior-title">Epic Warriors A–Z</h1>
+<span></span>
+</header>
+<p>Choose a warrior from the Ramayana or Mahabharata. Open a letter to see a picture, learn about the warrior, and hear the introduction.</p>
+<div id="english-warrior-grid" class="english-warrior-grid" role="group" aria-label="Choose an epic warrior by letter"></div>
+</section>
+<section id="english-lesson" class="english-screen english-lesson" hidden aria-labelledby="english-lesson-title">
+<header class="english-header">
+<button class="english-back" type="button" id="english-lesson-back">← Back</button>
+<h1 id="english-lesson-title">English words</h1>
+<button class="english-hear" type="button" id="english-hear-letter">🔊 Hear letter</button>
+</header>
+<p id="english-lesson-intro">Choose a letter to see its words.</p>
+<div class="english-alphabet" id="english-alphabet" role="group" aria-label="Choose a letter"></div>
+<section class="english-word-content" id="english-word-content" aria-live="polite">
+<h2 id="english-selected-letter">Choose a letter</h2>
+<div class="english-word-list" id="english-word-list"></div>
+</section>
+</section>
+<section id="sketch-home" class="english-screen sketch-screen" hidden aria-labelledby="sketch-home-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-home-back">← Back</button>
+<h1 id="sketch-home-title">Sketch the diagram</h1>
+<span></span>
+</header>
+<p>Watch a colorful demo or start your own drawing practice.</p>
+<div class="sketch-home-options" role="group" aria-label="Choose a sketch activity">
+<button class="choice-card sketch-demo-card" type="button" id="sketch-demo-entry"><span class="choice-icon" aria-hidden="true">🖍️</span><span class="choice-label">See a demo<small>Watch a picture come to life</small></span></button>
+<button class="choice-card sketch-practice-card" type="button" id="sketch-practice-entry"><span class="choice-icon" aria-hidden="true">🎨</span><span class="choice-label">Start practice<small>Choose a level and picture</small></span></button>
+</div>
+</section>
+<section id="sketch-demo" class="english-screen sketch-screen" hidden aria-labelledby="sketch-demo-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-demo-back">← Back</button>
+<h1 id="sketch-demo-title">Coloring demo</h1>
+<span></span>
+</header>
+<p>Tap Start demo to watch the picture get colored.</p>
+<div class="sketch-demo-board"><canvas id="sketch-demo-canvas" width="900" height="600" aria-label="A flower drawing on a white background"></canvas></div>
+<p id="sketch-demo-status" class="sketch-status" role="status" aria-live="polite">Ready when you are!</p>
+<button class="english-hear sketch-action" type="button" id="sketch-demo-start">▶ Start demo</button>
+</section>
+<section id="sketch-categories" class="english-screen sketch-screen" hidden aria-labelledby="sketch-categories-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-categories-back">← Back</button>
+<h1 id="sketch-categories-title">What would you like to sketch?</h1>
+<span></span>
+</header>
+<p>Choose any picture group to start sketching.</p>
+<div id="sketch-category-grid" class="sketch-option-grid" role="group" aria-label="Choose a picture category"></div>
+</section>
+<section id="sketch-more" class="english-screen sketch-screen" hidden aria-labelledby="sketch-more-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-more-back">← Categories</button>
+<h1 id="sketch-more-title">More to sketch</h1>
+<span></span>
+</header>
+<p id="sketch-more-intro">All original and open-license coloring pictures are ready to choose.</p>
+<div id="sketch-more-grid" class="sketch-option-grid sketch-more-grid" role="group" aria-label="More coloring pictures"></div>
+</section>
+<section id="sketch-pictures" class="english-screen sketch-screen" hidden aria-labelledby="sketch-pictures-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-pictures-back">← Back</button>
+<h1 id="sketch-pictures-title">Choose a picture</h1>
+<span></span>
+</header>
+<p id="sketch-pictures-intro">Pick a picture to color.</p>
+<div id="sketch-picture-grid" class="sketch-option-grid" role="group" aria-label="Choose a picture"></div>
+</section>
+<section id="sketch-practice" class="english-screen sketch-screen sketch-practice-screen" hidden aria-labelledby="sketch-practice-title">
+<header class="english-header">
+<button class="english-back" type="button" id="sketch-practice-back">← Pictures</button>
+<h1 id="sketch-practice-title">Color your picture</h1>
+<span></span>
+</header>
+<div class="sketch-workspace">
+<div class="sketch-main">
+<p id="sketch-practice-instructions">Choose a color, then draw on the picture.</p>
+<canvas id="sketch-practice-canvas" width="900" height="600" aria-label="Drawing canvas. Choose a color and draw with your finger or mouse."></canvas>
+<div class="sketch-palette" id="sketch-palette" role="group" aria-label="Choose a paint color"></div>
+<div class="sketch-mixer">
+<label>Mix colors
+<select id="sketch-mix-first" aria-label="First color to mix"></select>
+</label>
+<span aria-hidden="true">+</span>
+<label>
+<select id="sketch-mix-second" aria-label="Second color to mix"></select>
+</label>
+<button class="english-hear" type="button" id="sketch-mix-button">Mix colors</button>
+</div>
+<p id="sketch-practice-status" class="sketch-status" role="status" aria-live="polite"></p>
+<button class="english-hear sketch-action" type="button" id="sketch-finish-button" disabled>Finish picture</button>
+</div>
+<aside class="sketch-reference" aria-label="Original picture">
+<strong>Original picture</strong>
+<canvas id="sketch-reference-canvas" width="300" height="220" aria-label="Original image example"></canvas>
+<span id="sketch-reference-name"></span>
+</aside>
+</div>
+<div id="sketch-celebration" class="sketch-celebration" hidden role="dialog" aria-modal="true" aria-labelledby="sketch-celebration-title">
+<div class="sketch-celebration-sparkles" aria-hidden="true"><span>✨</span><span>⭐</span><span>🎉</span><span>✨</span><span>🌟</span><span>🎊</span></div>
+<p class="sketch-celebration-greeting" id="sketch-celebration-greeting"></p>
+<h2 id="sketch-celebration-title">You did it!</h2>
+<div class="sketch-completed-frame"><canvas id="sketch-completed-canvas" width="675" height="1200" aria-label="Your completed colored picture"></canvas></div>
+<strong id="sketch-completed-name"></strong>
+<p>Let’s spell your picture!</p>
+<div class="sketch-spelling" id="sketch-spelling" aria-hidden="true"></div>
+<strong class="sketch-spelling-word" id="sketch-spelling-word" aria-live="polite"></strong>
+<button class="english-hear sketch-action" type="button" id="sketch-celebration-next">Choose next level</button>
+</div>
+</section>
+<section id="math-menu" class="math-screen" hidden>
+<div class="big" aria-hidden="true">🧮</div>
+<h1>Choose your option to start learning Mathematics</h1>
+<div class="math-options" role="group" aria-label="Choose a Maths topic">
+<button class="choice-card addition-card" type="button" data-math-topic="Addition"><span class="choice-icon" aria-hidden="true">➕</span><span class="choice-label">Addition</span></button>
+<button class="choice-card multiplication-card" type="button" data-math-topic="Multiplication"><span class="choice-icon" aria-hidden="true">✖️</span><span class="choice-label">Multiplication</span></button>
+<button class="choice-card subtraction-card" type="button" data-math-topic="Subtraction"><span class="choice-icon" aria-hidden="true">➖</span><span class="choice-label">Subtraction</span></button>
+<button class="choice-card division-card" type="button" data-math-topic="Division"><span class="choice-icon" aria-hidden="true">➗</span><span class="choice-label">Division</span></button>
+<button class="choice-card numbers-card" type="button" id="numbers-entry"><span class="choice-icon" aria-hidden="true">🔢</span><span class="choice-label">Numbers<small>Count and learn</small></span></button>
+<button class="choice-card roman-card" type="button" id="roman-entry"><span class="choice-icon" aria-hidden="true">🏛️</span><span class="choice-label">Roman Numbers<small>Explore I, V, X...</small></span></button>
+</div>
+<button class="math-back" type="button" id="math-language-back">← Back</button>
+</section>
+<section id="math-counting-screen" class="math-counting-screen" hidden aria-labelledby="math-counting-title">
+<header class="math-counting-header">
+<button class="math-back" type="button" id="math-counting-back">← Back</button>
+<h1 id="math-counting-title">Numbers</h1>
+<button class="math-counting-hear" type="button" id="math-counting-hear">🔊 Hear number</button>
+</header>
+<p class="math-counting-intro" id="math-counting-intro">Choose a number to see it, hear it, and count it!</p>
+<nav class="math-counting-pager" aria-label="Number pages">
+<button class="math-counting-page-button" type="button" id="math-counting-previous">← Previous 15</button>
+<span id="math-counting-page-label" aria-live="polite">Numbers 1–15</span>
+<button class="math-counting-page-button math-counting-next" type="button" id="math-counting-next">Next 15 ➜</button>
+</nav>
+<div class="math-counting-display" id="math-counting-display" aria-live="polite">
+<span class="math-counting-placeholder" aria-hidden="true">🌟</span>
+<strong>Pick a number!</strong>
+</div>
+<div class="math-counting-keyboard" id="math-counting-keyboard" role="group" aria-label="Choose a number"></div>
+</section>
+<section id="math-mode-screen" class="math-screen" hidden aria-labelledby="math-mode-title">
+<button class="math-back math-mode-back" type="button" id="math-mode-back">← Back</button>
+<div class="big" id="math-mode-icon" aria-hidden="true">➕</div>
+<h1 id="math-mode-title">Choose how to learn</h1>
+<p class="math-mode-intro" id="math-mode-intro">Choose a learning activity!</p>
+<div class="math-options math-mode-options" role="group" aria-label="Choose learning or questions">
+<button class="choice-card math-learning-card" type="button" id="math-learning-entry"><span class="choice-icon" aria-hidden="true">🎨</span><span class="choice-label">Learning<small>Learn with pictures</small></span></button>
+<button class="choice-card math-questions-card" type="button" id="math-questions-entry"><span class="choice-icon" aria-hidden="true">🎯</span><span class="choice-label">Questionaries<small>Practice with questions</small></span></button>
+<button class="choice-card math-story-card" type="button" id="math-story-entry"><span class="choice-icon" aria-hidden="true">📚</span><span class="choice-label">Story Questions<small>Detailed word problems, level by level</small></span></button>
+</div>
+</section>
+<section id="addition-level-screen" class="addition-level-screen" hidden aria-labelledby="addition-level-title">
+<button class="math-back addition-level-back" type="button" id="addition-levels-back"><span id="addition-level-back-title">← Back</span></button>
+<div class="big" id="addition-level-icon" aria-hidden="true">➕</div>
+<h1 id="addition-level-title">Choose your Maths Level</h1>
+<p id="addition-level-intro">Pick a level to start your learning adventure!</p>
+<button class="addition-level-hear" type="button" id="addition-level-hear">🔊 Hear levels</button>
+<nav class="addition-level-pager" aria-label="Level pages">
+<button class="addition-level-page-button" type="button" id="addition-level-previous">← Previous 10</button>
+<span id="addition-level-page-label" aria-live="polite"></span>
+<button class="addition-level-page-button" type="button" id="addition-level-next">Next 10 ➜</button>
+</nav>
+<div class="addition-level-options" id="addition-level-options" role="group" aria-label="Choose a level"></div>
+</section>
+<section id="addition-screen" class="addition-screen" hidden aria-labelledby="addition-title">
+<header class="addition-header">
+<button class="math-back" type="button" id="addition-menu-back">← Back</button>
+<h1 id="addition-title">Addition Adventure</h1>
+<button class="addition-hear" type="button" id="addition-hear">🔊 Hear explanation</button>
+</header>
+<p class="addition-intro" id="addition-intro">Addition means putting groups together!</p>
+<p class="addition-status" id="addition-status" aria-live="polite"></p>
+<section class="addition-builder" id="addition-builder" aria-label="Choose how many objects in each group">
+<div class="addition-picker" id="addition-first-picker">
+<h2 class="addition-picker-title" id="addition-builder-first-label">Bag 1 · first number</h2>
+<nav class="addition-number-pager" aria-label="First number pages">
+<button class="addition-number-page-button" id="addition-first-previous" type="button" disabled>← Previous 15</button>
+<span id="addition-first-page-label" aria-live="polite">Numbers 1–15</span>
+<button class="addition-number-page-button" id="addition-first-next" type="button">Next 15 ➜</button>
+</nav>
+<div class="addition-number-grid" id="addition-first-number-grid" role="group" aria-label="Choose the first number"></div>
+</div>
+<div class="addition-picker" id="addition-second-picker" hidden>
+<h2 class="addition-picker-title" id="addition-builder-second-label">Number being added</h2>
+<p class="addition-picker-hint" id="addition-second-hint" hidden>Choose a group count that divides the total evenly.</p>
+<nav class="addition-number-pager" aria-label="Second number pages">
+<button class="addition-number-page-button" id="addition-second-previous" type="button" disabled>← Previous 15</button>
+<span id="addition-second-page-label" aria-live="polite">Numbers 1–15</span>
+<button class="addition-number-page-button" id="addition-second-next" type="button">Next 15 ➜</button>
+</nav>
+<div class="addition-number-grid" id="addition-second-number-grid" role="group" aria-label="Choose the second number"></div>
+</div>
+</section>
+<div class="addition-board" id="addition-board"></div>
+<p class="addition-question" id="addition-question" aria-live="polite"></p>
+<p class="addition-word-problem" id="addition-word-problem" hidden></p>
+<div class="addition-answers" id="addition-answers" role="group" aria-label="Choose the answer"></div>
+<p class="addition-feedback" id="addition-feedback" aria-live="polite">Tap an answer to try!</p>
+<div class="addition-actions">
+<button class="addition-practice" id="addition-practice" type="button">Try a question ➜</button>
+<button class="addition-next" id="addition-next" type="button" hidden>Next question ➜</button>
+<button class="addition-choose-numbers" id="addition-choose-numbers" type="button" hidden>Choose different numbers</button>
+<button class="addition-builder-back" id="addition-builder-back" type="button" hidden>← Back</button>
+</div>
+</section>
+<section id="math-story-levels" class="english-screen english-identify-levels math-story-levels" hidden aria-labelledby="math-story-levels-title">
+<header class="english-header">
+<button class="english-back" type="button" id="math-story-levels-back">← Back</button>
+<h1 id="math-story-levels-title">Story Questions</h1>
+<button class="english-hear" type="button" id="math-story-levels-hear">🔊 Hear levels</button>
+</header>
+<p id="math-story-levels-intro">Answer 10 story questions to unlock the next level!</p>
+<nav class="addition-level-pager" aria-label="Story question level pages">
+<button class="addition-level-page-button" type="button" id="math-story-previous">← Previous 10</button>
+<span id="math-story-page-label" aria-live="polite"></span>
+<button class="addition-level-page-button" type="button" id="math-story-next-page">Next 10 ➜</button>
+</nav>
+<div class="english-identify-level-grid" id="math-story-level-grid" role="group" aria-label="Choose a story question level"></div>
+<p class="english-identify-progress" id="math-story-level-feedback" aria-live="polite"></p>
+</section>
+<section id="math-story-quiz" class="english-screen english-identify-quiz math-story-quiz" hidden aria-labelledby="math-story-title">
+<header class="english-header">
+<button class="english-back" type="button" id="math-story-quit">← Back</button>
+<h1 id="math-story-title">Story Questions</h1>
+<button class="english-hear" type="button" id="math-story-hear">🔊 Hear question</button>
+</header>
+<p class="english-identify-counter" id="math-story-counter"></p>
+<div class="math-story-progress" aria-hidden="true"><span id="math-story-progress-bar"></span></div>
+<div class="math-story-picture" id="math-story-picture" aria-hidden="true"></div>
+<p class="math-story-question" id="math-story-question"></p>
+<div class="english-identify-options math-story-options" id="math-story-options" role="group" aria-label="Choose the answer"></div>
+<p class="english-identify-feedback" id="math-story-feedback" aria-live="polite">Choose the correct answer!</p>
+<button class="math-story-explain-button" id="math-story-explain" type="button">💡 Answer &amp; explanation</button>
+<button class="english-identify-next" id="math-story-next" type="button" disabled>Next question ➜</button>
+</section>
+<section id="math-story-explanation" class="english-screen math-story-explanation" hidden aria-labelledby="math-story-explanation-title">
+<header class="english-header">
+<button class="english-back" type="button" id="math-story-explanation-back">← Back to question</button>
+<h1 id="math-story-explanation-title">Let’s work it out!</h1>
+<button class="english-hear" type="button" id="math-story-explanation-hear">🔊 Hear explanation</button>
+</header>
+<p class="math-story-explanation-question" id="math-story-explanation-question"></p>
+<div class="math-story-visual" id="math-story-visual" role="group" aria-label="Visual explanation"></div>
+<p class="math-story-explanation-text" id="math-story-explanation-text"></p>
+<nav class="math-story-explanation-navigation" aria-label="Explanation steps">
+<button class="math-story-explanation-step-button" id="math-story-explanation-previous" type="button" disabled>← Previous step</button>
+<span class="math-story-explanation-step-label" id="math-story-explanation-step-label" aria-live="polite"></span>
+<button class="math-story-explanation-step-button" id="math-story-explanation-next" type="button">Next step ➜</button>
+</nav>
+<p class="math-story-answer" id="math-story-answer" aria-live="polite"></p>
+<p class="math-story-explanation-hint">Go back to the question to choose your answer.</p>
+</section>
+<section id="native-types" class="english-screen english-types-screen native-types-screen" hidden aria-labelledby="native-types-title">
+<div class="big" id="native-types-icon" aria-hidden="true">🌼</div>
+<h1 id="native-types-title">Choose how to learn</h1>
+<p id="native-types-intro">Choose how to learn — pick a fun activity!</p>
+<div class="english-type-options native-type-options" role="group" aria-label="Choose a learning activity">
+<button class="choice-card english-type-card native-letters-card" type="button" id="native-letters-entry"><span class="choice-icon native-letter-icon" id="native-letters-icon" aria-hidden="true">అ</span><span class="choice-label">Letters &amp; Words<small>Tap, see and hear</small></span></button>
+<button class="choice-card english-type-card native-quiz-card" type="button" id="native-quiz-entry"><span class="choice-icon" id="native-quiz-icon" aria-hidden="true">🐘</span><span class="choice-label">Picture Questions<small>Levels that never end</small></span></button>
+<button class="choice-card english-type-card native-stories-card" type="button" id="native-stories-entry"><span class="choice-icon" aria-hidden="true">📖</span><span class="choice-label" id="native-stories-label">కథలు<small>విని ఊహించండి</small></span></button>
+</div>
+<p class="native-types-status" id="native-types-status" aria-live="polite"></p>
+<button class="english-back" type="button" id="native-types-back">← Back</button>
+</section>
+<section id="quiz-levels" class="english-screen english-identify-levels" hidden aria-labelledby="quiz-levels-title">
+<header class="english-header">
+<button class="english-back" type="button" id="quiz-levels-back">← Back</button>
+<h1 id="quiz-levels-title">Levels</h1>
+<button class="english-hear" type="button" id="quiz-levels-hear">🔊 Hear levels</button>
+</header>
+<p id="quiz-levels-intro">Answer 10 questions to unlock the next level!</p>
+<nav class="addition-level-pager" aria-label="Level pages">
+<button class="addition-level-page-button" type="button" id="quiz-previous">← Previous 10</button>
+<span id="quiz-page-label" aria-live="polite"></span>
+<button class="addition-level-page-button" type="button" id="quiz-next-page">Next 10 ➜</button>
+</nav>
+<div class="english-identify-level-grid" id="quiz-level-grid" role="group" aria-label="Choose a level"></div>
+<p class="english-identify-progress" id="quiz-level-feedback" aria-live="polite"></p>
+</section>
+<section id="quiz-play" class="english-screen english-identify-quiz quiz-play" hidden aria-labelledby="quiz-title">
+<header class="english-header">
+<button class="english-back" type="button" id="quiz-quit">← Back</button>
+<h1 id="quiz-title">Questions</h1>
+<button class="english-hear" type="button" id="quiz-hear">🔊 Hear question</button>
+</header>
+<p class="english-identify-counter" id="quiz-counter"></p>
+<div class="math-story-progress" aria-hidden="true"><span id="quiz-progress-bar"></span></div>
+<div class="quiz-picture" id="quiz-picture" aria-hidden="true"></div>
+<p class="quiz-question" id="quiz-question"></p>
+<div class="english-identify-options quiz-options" id="quiz-options" role="group" aria-label="Choose the answer"></div>
+<div class="quiz-builder" id="quiz-builder" hidden>
+<div class="quiz-sentence" id="quiz-sentence" aria-live="polite"></div>
+<div class="quiz-tiles" id="quiz-tiles" role="group" aria-label="Word tiles"></div>
+<button class="quiz-clear" type="button" id="quiz-clear">↺ Start again</button>
+</div>
+<p class="english-identify-feedback" id="quiz-feedback" aria-live="polite"></p>
+<button class="english-identify-next" id="quiz-next" type="button" disabled>Next question ➜</button>
+</section>
+<section id="app" hidden>
+<header><div class="app-brand"><strong>Little Learners</strong><small>LEARN • PLAY • GROW</small></div><b id="hi"></b><button id="again" type="button">🔊 Again</button><button id="chg" type="button">← Back</button><button id="lang" type="button">Change Language</button></header>
+<div id="stage"></div><div id="st"></div><div id="pad"></div>
+</section>
+<dialog id="voice-setup-dialog" class="voice-setup-dialog" aria-labelledby="voice-setup-title">
+<h2 id="voice-setup-title">Set up speech voices?</h2>
+<p id="voice-setup-missing"></p>
+<p>Voice availability differs by device and browser. This app cannot install voice packs itself, but it can show you where to check your device settings.</p>
+<div class="voice-setup-actions" id="voice-setup-choice">
+<button type="button" id="voice-setup-show">Show setup instructions</button>
+<button type="button" id="voice-setup-skip">Continue with available voices</button>
+</div>
+<section id="voice-setup-help" hidden>
+<p id="voice-setup-instructions"></p>
+<p>After installing voices, return here and check again. Your browser may need to be restarted before they appear.</p>
+<div class="voice-setup-actions">
+<button type="button" id="voice-setup-recheck">Check voices again</button>
+<button type="button" id="voice-setup-close">Continue</button>
+</div>
+</section>
+</dialog>
+<script src="app.js" defer></script></body></html>

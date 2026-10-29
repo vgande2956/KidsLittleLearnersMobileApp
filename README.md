@@ -1,6 +1,6 @@
 # Little Learners for Android
 
-The Android app is a separate mobile experience bundled inside the APK. It does not open or embed the Little Learners website. Its screens and styles are stored in `www/`; account requests go to the same production authentication API and users database as the website.
+The Android app is a separate mobile experience bundled inside the APK. It does not open or embed the Little Learners website. The full learning app (English, Telugu, Hindi, Maths, and General Knowledge activities, with their images and word data) lives in `app/`; `npm run build` assembles it into `www/` together with a native account bridge. Account requests go to the same production authentication API and users database as the website.
 
 The Dockerfile and `render.yaml` deploy a separate hosted copy of the mobile UI. Nginx serves the bundled app and proxies browser account requests to the existing production API, keeping session cookies on the mobile service origin. This Render service does not replace or create the website backend or its users database.
 
@@ -37,4 +37,4 @@ The **Build Android APK** GitHub Actions workflow also builds a separate APK. Ru
 
 ## Updating
 
-The mobile app is separate from the website repository. Its local UI is under `www/`, and its authentication API origin is set in `www/app.js`. Rebuild and sync the Android project after changing the local UI or native plugin.
+The mobile app is separate from the website repository. Its source is under `app/` (learning content and UI) and `native/` (account bridge and Android plugin). To pick up web changes, copy the updated files from the website's `src/` into `app/` (excluding `sw.js` and `manifest.webmanifest`). Rebuild and sync the Android project after any change.

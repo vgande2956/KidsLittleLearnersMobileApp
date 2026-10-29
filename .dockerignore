@@ -4,4 +4,4 @@
 .gradle
 android
 node_modules
-www/app.bundle.js
+www
