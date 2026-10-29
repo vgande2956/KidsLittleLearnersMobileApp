@@ -4,7 +4,7 @@
   "private": true,
   "description": "Standalone Android app for Little Learners",
   "scripts": {
-    "build": "esbuild www/app.js --bundle --outfile=www/app.bundle.js --platform=browser --target=es2020",
+    "build": "node scripts/build.mjs",
     "android:setup": "node scripts/setup-android.mjs",
     "android:sync": "cap sync android",
     "android:open": "cap open android"
@@ -17,5 +17,8 @@
   },
   "allowScripts": {
     "esbuild@0.25.12": true
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^6.1.0"
   }
 }

@@ -11,7 +11,7 @@ on:
       - 'package-lock.json'
       - 'scripts/**'
       - 'native/**'
-      - 'www/**'
+      - 'app/**'
 
 permissions:
   contents: read
