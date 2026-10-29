@@ -63,3 +63,5 @@ if (onCreate.test(updatedActivity)) {
 writeFileSync(mainActivityPath, updatedActivity);
 
 console.log('Android project is ready with native account-session support.');
+
+await import('./generate-icons.mjs');
