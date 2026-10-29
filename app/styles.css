@@ -847,3 +847,5 @@ button{font-family:inherit;line-height:1.25;text-wrap:balance}
 @media (prefers-reduced-motion:reduce){.sketch-celebration h2,.sketch-celebration-sparkles span{animation:none}.sketch-spelling span{transform:none}}
 
 #language .learning-mascot{width:auto;height:auto;margin-bottom:6px}#language .learning-mascot img{width:min(46vmin,240px);height:auto;aspect-ratio:1/1;object-fit:contain}
+
+.everyday-object-source,.prime-minister-source,.india-information-source{display:none!important}
