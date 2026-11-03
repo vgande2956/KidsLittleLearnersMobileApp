@@ -43,7 +43,6 @@ if (Capacitor.isNativePlatform()) {
 function installSpeech() {
   const TTS = registerPlugin('TextToSpeech');
   let voices = [];
-  let queue = Promise.resolve();
   let token = 0;
   let current = null;
   let pending = 0;
@@ -70,54 +69,61 @@ function installSpeech() {
       pending = 0;
       const stopped = current;
       current = null;
-      queue = queue.then(() => TTS.stop().catch(() => {}));
+      TTS.stop().catch(() => {});
       if (stopped?.onerror) stopped.onerror({ error: 'interrupted' });
     },
     speak(utterance) {
       const myToken = token;
-      pending++;
-      queue = queue.then(async () => {
-        pending = Math.max(0, pending - 1);
-        if (myToken !== token) return;
-        current = utterance;
-        try {
-          utterance.onstart?.({});
-          const index = utterance.voice ? voices.indexOf(utterance.voice) : -1;
-          await TTS.speak({
-            text: utterance.text,
-            lang: utterance.voice?.lang || utterance.lang || 'en-IN',
-            rate: utterance.rate,
-            pitch: utterance.pitch,
-            volume: utterance.volume,
-            ...(index >= 0 ? { voice: index } : {}),
-            category: 'playback',
-            queueStrategy: 1,
-          });
-          if (myToken === token && current === utterance) {
-            current = null;
-            utterance.onend?.({});
-          }
-        } catch (error) {
-          if (myToken === token && current === utterance) {
-            current = null;
-            utterance.onerror?.({ error: String(error?.message || 'synthesis-failed') });
-          }
+      current = utterance;
+      const index = utterance.voice && !utterance.voice.fallback ? voices.indexOf(utterance.voice) : -1;
+      Promise.resolve().then(() => {
+        if (myToken !== token || current !== utterance) return null;
+        utterance.onstart?.({});
+        return TTS.speak({
+          text: utterance.text,
+          lang: utterance.voice?.lang || utterance.lang || 'en-IN',
+          rate: utterance.rate,
+          pitch: utterance.pitch,
+          volume: utterance.volume,
+          ...(index >= 0 ? { voice: index } : {}),
+          category: 'playback',
+          queueStrategy: 0,
+        }).then(() => true);
+      }).then((finished) => {
+        if (finished && myToken === token && current === utterance) {
+          current = null;
+          utterance.onend?.({});
+        }
+      }).catch((error) => {
+        if (myToken === token && current === utterance) {
+          current = null;
+          utterance.onerror?.({ error: String(error?.message || 'synthesis-failed') });
         }
       });
     },
   };
-
   window.speechSynthesis = synth;
   window.SpeechSynthesisUtterance = SpeechSynthesisUtterance;
 
-  TTS.getSupportedVoices().then(({ voices: list = [] }) => {
-    voices = list.map((voice) => ({
-      voiceURI: voice.voiceURI,
-      name: voice.name,
-      lang: voice.lang,
-      localService: true,
-      default: !!voice.default,
-    }));
-    synth.onvoiceschanged?.();
-  }).catch(() => {});
+  const fallbackVoices = ['en-IN', 'te-IN', 'hi-IN'].map((lang) => ({
+    voiceURI: lang, name: `Device ${lang}`, lang, localService: true, default: lang === 'en-IN', fallback: true,
+  }));
+  const loadVoices = (attempt = 0) => {
+    TTS.getSupportedVoices().then(({ voices: list = [] }) => {
+      if (!list.length && attempt < 3) {
+        setTimeout(() => loadVoices(attempt + 1), 700);
+        return;
+      }
+      voices = list.length
+        ? list.map((voice) => ({
+          voiceURI: voice.voiceURI, name: voice.name, lang: voice.lang, localService: true, default: !!voice.default,
+        }))
+        : fallbackVoices;
+      synth.onvoiceschanged?.();
+    }).catch(() => {
+      voices = fallbackVoices;
+      synth.onvoiceschanged?.();
+    });
+  };
+  loadVoices();
 }
