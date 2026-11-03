@@ -43,6 +43,9 @@ public class NativeAuthPlugin extends Plugin {
             case "resendVerification":
                 path = "/api/auth/resend-verification";
                 break;
+            case "forgotPassword":
+                path = "/api/auth/forgot-password";
+                break;
             case "logout":
                 path = "/api/auth/logout";
                 break;

@@ -6,6 +6,7 @@ const ACTIONS = {
   '/api/auth/session': 'session',
   '/api/auth/logout': 'logout',
   '/api/auth/resend-verification': 'resendVerification',
+  '/api/auth/forgot-password': 'forgotPassword',
 };
 
 // On the device, account calls go through the native plugin so the backend's
