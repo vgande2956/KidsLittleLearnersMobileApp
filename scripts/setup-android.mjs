@@ -82,7 +82,7 @@ let gradle = readFileSync(gradlePath, 'utf8');
 if (!gradle.includes('sherpa-onnx')) {
   gradle = gradle.replace(
     /(defaultConfig\s*\{)/,
-    `$1\n        ndk { abiFilters 'arm64-v8a' }`,
+    `$1\n        ndk { abiFilters 'arm64-v8a', 'armeabi-v7a' }`,
   ).replace(
     /(dependencies\s*\{)/,
     `$1\n    implementation(name: 'sherpa-onnx-${SHERPA_VERSION}', ext: 'aar')\n    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.24'`,

@@ -38,6 +38,29 @@ public class NativePiperPlugin extends Plugin {
     private volatile long token = 0;
     private volatile AudioTrack track;
     private File dataRoot;
+    private volatile boolean enabled = false;
+
+    // A native crash cannot be caught, so a marker left behind by a crashed run switches the offline voices off for good.
+    private File marker(String name) {
+        return new File(getContext().getFilesDir(), "piper-" + name);
+    }
+
+    private boolean checkUsable() {
+        if (marker("disabled").exists()) return false;
+        File loading = marker("loading");
+        if (loading.exists()) {
+            try {
+                marker("disabled").createNewFile();
+            } catch (Exception ignored) {
+            }
+            loading.delete();
+            return false;
+        }
+        for (String abi : android.os.Build.SUPPORTED_ABIS) {
+            if (abi.equals("arm64-v8a") || abi.equals("armeabi-v7a")) return true;
+        }
+        return false;
+    }
 
     private synchronized File ensureData() throws Exception {
         if (dataRoot != null) return dataRoot;
@@ -70,6 +93,7 @@ public class NativePiperPlugin extends Plugin {
         synchronized (ttsLock) {
             OfflineTts existing = engines.get(code);
             if (existing != null) return existing;
+            if (!enabled) return null;
             File root = ensureData();
             File model = new File(root, code + "/model.onnx");
             if (!model.exists()) return null;
@@ -82,7 +106,11 @@ public class NativePiperPlugin extends Plugin {
             modelConfig.setNumThreads(Math.max(2, Math.min(4, Runtime.getRuntime().availableProcessors() / 2)));
             OfflineTtsConfig config = new OfflineTtsConfig();
             config.setModel(modelConfig);
+            File loading = marker("loading");
+            loading.createNewFile();
             OfflineTts created = new OfflineTts(null, config);
+            created.generate("a", 0, 1.0f);
+            loading.delete();
             engines.put(code, created);
             return created;
         }
@@ -118,7 +146,8 @@ public class NativePiperPlugin extends Plugin {
             for (String code : new String[] {"en", "te"}) {
                 boolean ok;
                 try {
-                    ok = engine(code) != null;
+                    enabled = enabled || checkUsable();
+                    ok = enabled && new File(ensureData(), code + "/model.onnx").exists();
                 } catch (Throwable error) {
                     ok = false;
                 }
