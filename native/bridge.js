@@ -83,7 +83,7 @@ function installSpeech() {
         return TTS.speak({
           text: utterance.text,
           lang: utterance.voice?.lang || utterance.lang || 'en-IN',
-          rate: utterance.rate,
+          rate: Math.min(utterance.rate || 0.76, 0.8),
           pitch: utterance.pitch,
           volume: utterance.volume,
           ...(index >= 0 ? { voice: index } : {}),
