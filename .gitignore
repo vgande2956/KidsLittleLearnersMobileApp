@@ -2,3 +2,5 @@ node_modules/
 android/
 .idea/
 www/
+native/tts-assets/
+native/.tts-work/

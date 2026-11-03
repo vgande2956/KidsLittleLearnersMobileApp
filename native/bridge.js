@@ -43,6 +43,9 @@ if (Capacitor.isNativePlatform()) {
 // Android WebView has no Web Speech API, so back it with the device's native text-to-speech.
 function installSpeech() {
   const TTS = registerPlugin('TextToSpeech');
+  const Piper = registerPlugin('PiperVoice');
+  const piperReady = { en: false, te: false };
+  const piperVoices = [];
   let voices = [];
   let token = 0;
   let current = null;
@@ -62,7 +65,7 @@ function installSpeech() {
     get speaking() { return !!current; },
     get pending() { return pending > 0; },
     paused: false,
-    getVoices: () => voices,
+    getVoices: () => [...piperVoices, ...voices],
     resume() {},
     pause() {},
     cancel() {
@@ -70,6 +73,7 @@ function installSpeech() {
       pending = 0;
       const stopped = current;
       current = null;
+      Piper.stop().catch(() => {});
       TTS.stop().catch(() => {});
       if (stopped?.onerror) stopped.onerror({ error: 'interrupted' });
     },
@@ -77,8 +81,9 @@ function installSpeech() {
       const myToken = token;
       current = utterance;
       const index = utterance.voice && !utterance.voice.fallback ? voices.indexOf(utterance.voice) : -1;
-      Promise.resolve().then(() => {
-        if (myToken !== token || current !== utterance) return null;
+      const stale = () => myToken !== token || current !== utterance;
+      const viaDevice = () => {
+        if (stale()) return null;
         utterance.onstart?.({});
         return TTS.speak({
           text: utterance.text,
@@ -90,7 +95,24 @@ function installSpeech() {
           category: 'playback',
           queueStrategy: 0,
         }).then(() => true);
-      }).then((finished) => {
+      };
+      const lang = utterance.voice?.lang || utterance.lang || 'en-IN';
+      const code = lang.toLowerCase().startsWith('te') ? 'te' : lang.toLowerCase().startsWith('en') ? 'en' : '';
+      const useDevice = !code || !piperReady[code] || (utterance.voice && !utterance.voice.piper);
+      const viaPiper = () => {
+        if (stale()) return Promise.resolve(false);
+        utterance.onstart?.({});
+        return Piper.speak({
+          text: utterance.text,
+          lang: code,
+          speed: 0.55 + 0.5 * Math.min(utterance.rate || 0.76, 0.8),
+          pitch: utterance.pitch || 1,
+          volume: utterance.volume ?? 1,
+        }).then((result) => !result?.cancelled);
+      };
+      const first = useDevice
+        ? Promise.resolve(null)
+        : viaPiper().catch(() => null);      first.then((done) => (done === null ? viaDevice() : done)).then((finished) => {
         if (finished && myToken === token && current === utterance) {
           current = null;
           utterance.onend?.({});
@@ -127,4 +149,14 @@ function installSpeech() {
     });
   };
   loadVoices();
+  Piper.prepare().then((ready) => {
+    for (const code of ['en', 'te']) {
+      piperReady[code] = !!ready?.[code];
+      if (piperReady[code]) {
+        const lang = code === 'te' ? 'te-IN' : 'en-IN';
+        piperVoices.push({ voiceURI: 'piper-' + code, name: 'Little Learners Piper (' + lang + ')', lang, localService: true, default: false, piper: true });
+      }
+    }
+    if (piperVoices.length) synth.onvoiceschanged?.();
+  }).catch(() => {});
 }

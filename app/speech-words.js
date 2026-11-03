@@ -1,14 +1,14 @@
 (function () {
   const GROUPS = [
-    { key: "sounds", icon: "🔊", title: "Sounds & Exclamations", tip: "Fun sounds are easy to copy and make speaking exciting.", words: [["Moo", "🐄"], ["Beep", "🚗"], ["Uh-oh!", "😮"], ["Yay!", "🎉"], ["Woof", "🐶"], ["Meow", "🐱"], ["Choo choo", "🚂"], ["Wow!", "🤩"]] },
-    { key: "actions", icon: "🏃", title: "Action Words", tip: "Say the word right as you do the action.", words: [["Go", "🚦"], ["Up", "🎈"], ["Eat", "🍎"], ["Stop", "✋"], ["Sit", "🪑"], ["Jump", "🦘"], ["Clap", "👏"], ["Drink", "🥛"]] },
-    { key: "requests", icon: "🙋", title: "Request Words", tip: "These words help children ask for what they need.", words: [["More", "🍪"], ["Help", "🆘"], ["Mine", "🧸"], ["Open", "📦"], ["Please", "🙏"], ["Water", "💧"], ["Milk", "🥛"], ["All done", "✅"]] }
+    { key: "sounds", icon: "🔊", title: "Sounds & Exclamations", tip: "Fun sounds are easy to copy and make speaking exciting.", words: [["Moo", "🐄"], ["Beep", "🚗"], ["Uh-oh!", "😮"], ["Yay!", "🎉"], ["Woof", "🐶"], ["Meow", "🐱"], ["Choo choo", "🚂"], ["Wow!", "🤩"], ["Quack", "🦆"], ["Baa", "🐑"], ["Roar", "🦁"], ["Buzz", "🐝"], ["Splash!", "💦"], ["Boom!", "💥"], ["Tick tock", "⏰"], ["Hello!", "👋"]] },
+    { key: "actions", icon: "🏃", title: "Action Words", tip: "Say the word right as you do the action.", words: [["Go", "🚦"], ["Up", "🎈"], ["Eat", "🍎"], ["Stop", "✋"], ["Sit", "🪑"], ["Jump", "🦘"], ["Clap", "👏"], ["Drink", "🥛"], ["Run", "🏃"], ["Walk", "🚶"], ["Come", "🤗"], ["Look", "👀"], ["Sleep", "😴"], ["Wash", "🧼"], ["Throw", "🏐"], ["Hug", "🫂"]] },
+    { key: "requests", icon: "🙋", title: "Request Words", tip: "These words help children ask for what they need.", words: [["More", "🍪"], ["Help", "🆘"], ["Mine", "🧸"], ["Open", "📦"], ["Please", "🙏"], ["Water", "💧"], ["Milk", "🥛"], ["All done", "✅"], ["Again", "🔁"], ["Up please", "🙋"], ["Hungry", "🍽️"], ["Sorry", "😔"], ["Thank you", "💐"], ["My turn", "👉"], ["Play", "🧩"]] }
   ];
   const METHODS = [
-    { icon: "🎬", title: "Visual Short Videos", text: "Show a bold, colourful picture with one word and an upbeat voice. For example, the word “Up” with a glowing balloon floating into the sky." },
-    { icon: "⚽", title: "Action Pairing", text: "Say “Go!” right before rolling a ball or pushing a toy car. The child connects the word with the action." },
-    { icon: "🍎", title: "The “Choice” Game", text: "Hold up two different things, like an apple and a block. Wait for the child to try the word before handing it over." },
-    { icon: "📚", title: "Picture Books", text: "Point to simple, high-contrast pictures in a book and say the name with a happy face. Repeat it often." }
+    { icon: "🎬", title: "Visual Short Videos", intro: "A picture plus one word plus a happy voice.", talk: [["Parent", "Look! A big shiny balloon!", "🎈"], ["Parent", "Up! Up! Up!", "⬆️"], ["Child", "Uh!", "👶"], ["Parent", "Yes! Up! Say it with me, up!", "😊"], ["Child", "Up!", "👶"], ["Parent", "Yay! The balloon goes up!", "🎉"]] },
+    { icon: "⚽", title: "Action Pairing", intro: "Say the word just before you do the action.", talk: [["Parent", "Ready? Go!", "🚗"], ["Parent", "The car goes! Go, go, go!", "💨"], ["Child", "Go!", "👶"], ["Parent", "Great talking! Stop! The car stops.", "✋"], ["Child", "Stop!", "👶"], ["Parent", "Yay! Again? Go!", "🎉"]] },
+    { icon: "🍎", title: "The Choice Game", intro: "Hold up two things and wait for the child to try.", talk: [["Parent", "Do you want the apple or the block?", "🍎"], ["Parent", "Apple? Or block?", "🧱"], ["Child", "Ap!", "👶"], ["Parent", "Apple! Yes, you asked for the apple. Here you go!", "🥰"], ["Child", "Apple!", "👶"], ["Parent", "Wonderful talking!", "🌟"]] },
+    { icon: "📚", title: "Picture Books", intro: "Point to a simple picture and say its name happily.", talk: [["Parent", "Look at this! A dog!", "🐶"], ["Parent", "The dog says woof, woof!", "🔊"], ["Child", "Woof!", "👶"], ["Parent", "Yes! Woof! Now, where is the cat?", "🐱"], ["Child", "Meow!", "👶"], ["Parent", "You found the cat! Well done!", "👏"]] }
   ];
   const PARTS = [
     ["banana", "🍌", ["ba", "na", "na"]], ["apple", "🍎", ["ap", "ple"]], ["mango", "🥭", ["man", "go"]], ["tiger", "🐯", ["ti", "ger"]],
@@ -53,23 +53,25 @@ ${GROUPS.map(g => `<button class="choice-card english-type-card" type="button" d
     speak("Build words from sounds. Say each small part, then put them together. For example, ba, na, na, banana.", .76);
   }
 
+  const playTalk = m => say(m.talk.map(([who, line]) => who === "Child" ? { text: line, lang: "en-IN", rate: .7, pitch: 1.35, pauseAfter: 700 } : { text: line, lang: "en-IN", rate: .74, pitch: 1.05, pauseAfter: 600 }));
   function methods() {
-    show(`${back("menu", "Speech words")}<h1>💡 Creative Learning Methods</h1><button class="english-hear" type="button" data-sw="hear" data-text="${METHODS.map(m => m.title + ". " + m.text).join(" ")}">🔊 Hear this</button>
-${METHODS.map(m => `<div class="tenses-card"><h2>${m.icon} ${m.title}</h2><p>${m.text}</p></div>`).join("")}
+    show(`${back("menu", "Speech words")}<h1>💡 Creative Learning Methods</h1><p class="tenses-score">Read each little conversation. Tap ▶ to hear it!</p>
+${METHODS.map((m, i) => `<div class="tenses-card"><h2>${m.icon} ${m.title}</h2><p>${m.intro}</p>
+<div class="talk">${m.talk.map(([who, line, em]) => `<div class="talk-row ${who === "Child" ? "child" : "parent"}"><span class="talk-face" aria-hidden="true">${em}</span><div class="talk-bubble"><small>${who === "Child" ? "Child" : "Parent"}</small>${line}</div></div>`).join("")}</div>
+<button type="button" class="english-hear" data-sw="talk" data-i="${i}">▶ Hear the conversation</button></div>`).join("")}
 <div class="tenses-card"><h2>🎈 Try it: the word “Up”</h2><button type="button" class="speech-word speech-up" data-sw="word" data-word="Up"><span class="speech-emoji speech-float" aria-hidden="true">🎈</span><strong>Up!</strong></button></div>`);
-    speak("Creative learning methods. " + METHODS.map(m => m.title).join(", "), .76);
+    speak("Creative learning methods. Read each little conversation, and tap play to hear it.", .76);
   }
-
   let gameScore = 0;
   function game() {
     const pool = GROUPS.flatMap(g => g.words);
     const [a, b] = shuffle(pool).slice(0, 2);
     show(`${back("menu", "Speech words")}<h1>🎮 Choice Game</h1><p class="tenses-score">⭐ Words tried: ${gameScore}</p>
-<p>Look at the two things. Tap the one you want, then say its word!</p>
+<div class="talk"><div class="talk-row parent"><span class="talk-face" aria-hidden="true">🧑</span><div class="talk-bubble"><small>Parent</small>Do you want the ${a[0].toLowerCase()} or the ${b[0].toLowerCase()}? Tap the one you want and say its word!</div></div></div>
 <div class="speech-grid">${[a, b].map(w => `<button type="button" class="speech-word" data-sw="choose" data-word="${w[0]}"><span class="speech-emoji" aria-hidden="true">${w[1]}</span></button>`).join("")}</div>
 <p id="sw-msg" class="tenses-feedback good" aria-live="polite"></p>
 <button type="button" class="tenses-answer tenses-next" data-sw="game" hidden id="sw-next">Play again ➜</button>`);
-    speak("Which one do you want? Tap a picture.", .76);
+    say([{ text: `Do you want ${a[0]}, or ${b[0]}?`, lang: "en-IN", rate: .72, pitch: 1.05 }]);
   }
 
   function init() {
@@ -93,6 +95,7 @@ ${METHODS.map(m => `<div class="tenses-card"><h2>${m.icon} ${m.title}</h2><p>${m
         }
         case "game": game(); break;
         case "hear": speak(el.dataset.text, .76); break;
+        case "talk": playTalk(METHODS[+el.dataset.i]); break;
         case "word":
           el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
           if (typeof say === "function") say([{ text: el.dataset.word, lang: "en-IN", rate: .6, pitch: 1.1, pauseAfter: 900 }, { text: el.dataset.word, lang: "en-IN", rate: .6, pitch: 1.1 }]);
@@ -101,7 +104,7 @@ ${METHODS.map(m => `<div class="tenses-card"><h2>${m.icon} ${m.title}</h2><p>${m
           gameScore++;
           root().querySelectorAll(".speech-word").forEach(b => b.disabled = true);
           el.classList.add("pop");
-          document.getElementById("sw-msg").textContent = `Great choice! Now say "${el.dataset.word}" out loud!`;
+          document.getElementById("sw-msg").textContent = `Parent: "You want ${el.dataset.word}! Say ${el.dataset.word}!"  Child: "${el.dataset.word}!"  Parent: "Yay, well done!"`;
           document.getElementById("sw-next").hidden = false;
           say([{ text: `Say ${el.dataset.word}!`, lang: "en-IN", rate: .7, pitch: 1.1, pauseAfter: 900 }, { text: el.dataset.word, lang: "en-IN", rate: .6, pitch: 1.1, pauseAfter: 900 }, { text: "Yay! Well done!", lang: "en-IN", rate: .76, pitch: 1.15 }]);
           break;
